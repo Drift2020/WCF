@@ -6,6 +6,13 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiskInfo", "MyDiskInfo\MyDiskInfo.csproj", "{79162252-2325-468E-A8C1-EB8E0D9B273E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{39B31BFD-94BD-4EE8-9CAA-63C7EE93FA22}"
+	ProjectSection(ProjectDependencies) = postProject
+		{03275875-E152-4B82-BA7E-DC63A66D71C1} = {03275875-E152-4B82-BA7E-DC63A66D71C1}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDiskInfoConsole", "MyDiskInfoConsole\MyDiskInfoConsole.csproj", "{2E1AC50C-DCB4-4238-9D2A-52554A040CD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFv2", "DFv2\DFv2.csproj", "{03275875-E152-4B82-BA7E-DC63A66D71C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +28,14 @@ Global
 		{39B31BFD-94BD-4EE8-9CAA-63C7EE93FA22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39B31BFD-94BD-4EE8-9CAA-63C7EE93FA22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39B31BFD-94BD-4EE8-9CAA-63C7EE93FA22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1AC50C-DCB4-4238-9D2A-52554A040CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1AC50C-DCB4-4238-9D2A-52554A040CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1AC50C-DCB4-4238-9D2A-52554A040CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1AC50C-DCB4-4238-9D2A-52554A040CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03275875-E152-4B82-BA7E-DC63A66D71C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03275875-E152-4B82-BA7E-DC63A66D71C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03275875-E152-4B82-BA7E-DC63A66D71C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03275875-E152-4B82-BA7E-DC63A66D71C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

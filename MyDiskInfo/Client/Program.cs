@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.IO;
-
+using Client.ServiceReference1;
 namespace Client
 {
     [ServiceContract]
@@ -25,9 +25,48 @@ namespace Client
     }
     class Program
     {
+        //static void Main(string[] args)
+        //{
+        //    ServiceReference1.Service1Client client = new Service1Client();
+
+        //    while (true)
+        //    {
+        //        Console.Write("1.Free\n2.Total\n3.Exit\nEnter value: ");
+
+        //        var i = Console.ReadLine();
+        //        if (i == "1")
+        //        {
+        //            Console.Write("Enter disk name: ");
+        //            var str = Console.ReadLine();
+        //            string result = client.FreeSpace(str);
+        //            Console.WriteLine("result: {0}", result);
+        //            Console.WriteLine("Для завершения нажмите <ENTER>\n");
+        //            Console.ReadLine();
+
+        //        }
+
+        //        else if (i == "2")
+        //        {
+        //            // создаем канал, по которому будут передаваться сообщения между нашим клиентом и службой
+        //            Console.Write("Enter disk name: ");
+        //            var str = Console.ReadLine();
+
+        //            string intresult = client.FreeSpace(str);
+        //            Console.WriteLine("result: {0}", intresult);
+        //            Console.WriteLine("Для завершения нажмите <ENTER>\n");
+        //            Console.ReadLine();
+        //        }
+        //        else if (i == "3")
+        //        {
+        //            break;
+        //        }
+        //        Console.Clear();
+        //    }
+
+        //}
         static void Main(string[] args)
         {
-           
+
             NetTcpBinding tcp = new NetTcpBinding(
               SecurityMode.Message /* защита обеспечивается механизмом SOAP */,
               true /* механизм контроля доставки будет включен. */);
@@ -37,7 +76,7 @@ namespace Client
             // а также создает каналы для передачи сообщений между клиентом и службой.
             ChannelFactory<IMyFree> factory = new ChannelFactory<IMyFree>(
                 tcp,
-                new EndpointAddress("net.tcp://localhost/MyDiskInfos/Ep1"));
+                new EndpointAddress("net.tcp://localhost/MyDiskInfo/Ep1"));
 
             // создаем канал, по которому будут передаваться сообщения между нашим клиентом и службой
             IMyFree channel = factory.CreateChannel();
@@ -47,7 +86,7 @@ namespace Client
             MyBinding.Elements.Add(new HttpTransportBindingElement());
             ChannelFactory<IMyTotal> factoryCustom = new ChannelFactory<IMyTotal>(
              MyBinding,
-             new EndpointAddress("http://localhost:8084/MyDiskInfos/Ep2"));
+             new EndpointAddress("http://localhost:8084/MyDiskInfo/Ep2"));
             IMyTotal channelCustom = factoryCustom.CreateChannel();
 
             while (true)
@@ -71,7 +110,7 @@ namespace Client
                     // создаем канал, по которому будут передаваться сообщения между нашим клиентом и службой
                     Console.Write("Enter disk name: ");
                     var str = Console.ReadLine();
-                   
+
                     string intresult = channelCustom.TotalSpace(str);
                     Console.WriteLine("result: {0}", intresult);
                     Console.WriteLine("Для завершения нажмите <ENTER>\n");

@@ -15,6 +15,9 @@ namespace MyDiskInfo
         public Service1()
         {
             InitializeComponent();
+
+
+
         }
 
         protected override void OnStart(string[] args)

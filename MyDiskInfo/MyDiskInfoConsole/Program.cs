@@ -1,30 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.IO;
-namespace MyDiskInfo
+namespace MyDiskInfoConsole
 {
-    static class Program
+    class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        static void Main()
+        static void Main(string[] args)
         {
-           
             /*
-  * ServiceHost позволяет реализовать среду выполнения для класса службы.
-  * ServiceHost автоматически формирует полное описание службы в своем свойстве Description, 
-  * представляющем собой объект класса ServiceDescription. 
-  * Кроме этого,  ServiceHost создает и конфигурирует оконечные точки службы, 
-  * применяет настройки безопасности и начинает прослушивание входящих запросов от клиентов. 
-  * */
+ * ServiceHost позволяет реализовать среду выполнения для класса службы.
+ * ServiceHost автоматически формирует полное описание службы в своем свойстве Description, 
+ * представляющем собой объект класса ServiceDescription. 
+ * Кроме этого,  ServiceHost создает и конфигурирует оконечные точки службы, 
+ * применяет настройки безопасности и начинает прослушивание входящих запросов от клиентов. 
+ * */
             ServiceHost sh = new ServiceHost(typeof(MyDiskInfos));
 
             NetTcpBinding tcp = new NetTcpBinding(
@@ -49,12 +44,12 @@ namespace MyDiskInfo
 
             sh.CloseTimeout = TimeSpan.FromSeconds(20); // время тайм-аута для блокирования клиента при вызове Close()
             sh.Open();
-            
-        ///    sh.Close();
-
+            Console.WriteLine("Enter value for end this program");
+            Console.ReadLine();
+            sh.Close();
         }
 
-      
+        
 
         [ServiceContract]
         [DeliveryRequirements(RequireOrderedDelivery = true)]
@@ -82,22 +77,33 @@ namespace MyDiskInfo
 
             public string TotalSpace(string name)
             {
-               var i = GetDisk.Where(x => x[0] == name[0]);
-                var i1 = i.ToArray()[0];
-                DriveInfo di = new DriveInfo(i1.ToString());
+               var i = GetDisk.Where(x => x.ToLower()[0] == name.ToLower()[0]);
+                if (i.Count() > 0)
+                {
+                    var i1 = i.ToArray()[0];
+                    DriveInfo di = new DriveInfo(i1.ToString());
 
-                return di.TotalSize.ToString();
+                    return di.TotalSize.ToString();
+                }
+
+
+                return "None driwer";
             }
 
             public string FreeSpace(string name)
             {
-                var i = GetDisk.Where(x => x[0] == name[0]);
-                var i1 = i.ToArray()[0];
-                DriveInfo di = new DriveInfo(i1.ToString());
+                var i = GetDisk.Where(x => x.ToLower()[0] == name.ToLower()[0]);
+                if (i.Count() > 0)
+                {
+                    var i1 = i.ToArray()[0];
+                    DriveInfo di = new DriveInfo(i1.ToString());
 
-                return di.TotalFreeSpace.ToString();
+                    return di.TotalFreeSpace.ToString();
+                }
+                return "None driwer";
             }
         }
+
 
     }
 }
