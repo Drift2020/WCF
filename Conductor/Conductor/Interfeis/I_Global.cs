@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,10 +21,17 @@ namespace Conductor
         event EventHandler<EventArgs> Start_program;
         event EventHandler<EventArgs> Renewal;
         event EventHandler<EventArgs> ViweItem;
+        event EventHandler<EventArgs> Connect;
+
+
+        EndpointAddress httpAdr1 { set; get; }
+        BasicHttpBinding HttpBinding { set; get; }
+        Library_ConductorClient proxy { set; get; }
 
         string Name_Note { set; get; }
         string Full_Path_Note { set; get; }
-        
+        string ip { get; set; }
+        string port { get; set; }
         string[] str { set; get; }
         string NameItem { set; get; }
         List<string> Full_Path_Note_List { set; get; }

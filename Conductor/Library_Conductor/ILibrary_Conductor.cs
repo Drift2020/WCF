@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -11,7 +12,24 @@ namespace Library_Conductor
     [ServiceContract]
     public interface ILibrary_Conductor
     {
+     
+
         [OperationContract]
-        void DoWork();
+        string[] GetDirectories(string path, string filt);
+
+        [OperationContract]
+        string[] GetLogicalDrives();
+
+        [OperationContract]
+        FileInfo GetFileInfo(string path);
+
+        [OperationContract]
+        FileAttributes GetFileAttributes(string path);
+
+        [OperationContract]
+        string[] GetFiles(string path, string filt);
+
+        [OperationContract]
+        Stream GetStream(string path);
     }
 }

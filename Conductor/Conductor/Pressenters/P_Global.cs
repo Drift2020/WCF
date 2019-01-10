@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-
+using Model;
 namespace Conductor
 {
     class P_Global
     {
-         FileInfo fi;
+        FileInfo fi;
         private readonly I_Global _viwe;
         private readonly Histori model;
+        
         //  private readonly 
         public P_Global(I_Global viwe)
         {
@@ -25,10 +27,11 @@ namespace Conductor
             _viwe.Up += new EventHandler<EventArgs>(Up);
             _viwe.End += new EventHandler<EventArgs>(End);
             _viwe.Move_ += new EventHandler<EventArgs>(Move_);
-            _viwe.Start_program += new EventHandler<EventArgs>(Start_program);
+            _viwe.Connect += new EventHandler<EventArgs>(Start_program);
             _viwe.Renewal += new EventHandler<EventArgs>(Renewal);
             _viwe.Remove_Die_Path += new EventHandler<EventArgs>(Remove_Die_Path);
             _viwe.ViweItem += new EventHandler<EventArgs>(ViweItem);
+
         }
         public void Remove_Die_Path(object sender, EventArgs e)
         {
@@ -69,8 +72,10 @@ namespace Conductor
         }
         public void Open_Tree(object sender, EventArgs e)
         {
-            string[] str = Directory.GetDirectories((@"" + _viwe.Full_Path_Note), "*.*");
-          
+         
+           
+            string[] str = _viwe.proxy.GetDirectories((@"" + _viwe.Full_Path_Note), "*.*");
+
 
             model.Add_Tree(_viwe.Full_Path_Note);
             
@@ -79,8 +84,11 @@ namespace Conductor
             {
                 try
                 {
-                    fi = new FileInfo(str[i]);
-                    string[] str2 = Directory.GetDirectories((@"" + fi.FullName), "*.*");
+                 
+                 
+                    fi = _viwe.proxy.GetFileInfo(str[i]);
+                  
+                    string[] str2 = _viwe.proxy.GetDirectories((@"" + fi.FullName), "*.*");
                     _viwe.Name_Notee_List.Add(fi.Name);
                     _viwe.Full_Path_Note_List.Add(fi.FullName);
 
@@ -103,8 +111,10 @@ namespace Conductor
             model.Add_Histori(_viwe.Full_Path_Note.Replace("\\\\", "\\"));
 
             string temp = _viwe.Full_Path_Note.Replace("\\\\", "\\");
-            string[] str1 = Directory.GetDirectories(@"" + temp, "*.*");
-            string[] str2 = Directory.GetFiles(@"" + temp, "*.*");
+            //GetDirectories((@"" + _viwe.Full_Path_Note), "*.*");
+            string[] str1 = _viwe.proxy.GetDirectories(@"" + temp, "*.*");
+            //GetFiles((@"" + _viwe.Full_Path_Note), "*.*");
+            string[] str2 = _viwe.proxy.GetFiles(@"" + temp, "*.*");
             int length = str1.Length;
             Array.Resize(ref str1, str1.Length + str2.Length);
             Array.Copy(str2, 0, str1, length, str2.Length);
@@ -127,7 +137,8 @@ namespace Conductor
         {
             for (int i = 0; i < str1.Length; i++)
             {
-                fi = new FileInfo(str1[i]);
+                //GetFileInfo(str[i]);
+                fi = _viwe.proxy.GetFileInfo(str1[i]);
                 try
                 {
                   
@@ -138,8 +149,9 @@ namespace Conductor
                     _viwe.Date_Edit_element_List.Add("");                   
                 }
                 try
-                {                 
-                    _viwe.Type_element_List.Add(File.GetAttributes(str1[i]).ToString());                   
+                {
+                    //GetFileAttributes( path);
+                    _viwe.Type_element_List.Add(_viwe.proxy.GetFileAttributes(str1[i]).ToString());                   
                 }
                 catch
                 {                
@@ -183,17 +195,21 @@ namespace Conductor
                 ////// ////// ////// ////// ////// ////// ////// //////
                 if (temp == "g")
                 {
-                    str1 = Directory.GetLogicalDrives();
+                    //GetLogicalDrives();
+                    str1 = _viwe.proxy.GetLogicalDrives();
                 }
                 else if (temp[temp.Length - 1] == ':')
                 {
-                    str1 = Directory.GetLogicalDrives();
+                    //GetLogicalDrives();
+                    str1 = _viwe.proxy.GetLogicalDrives();
                     temp = _temp;
                 }
                 else
                 {
-                    str1 = Directory.GetDirectories(@"" + temp, "*.*");
-                    str2 = Directory.GetFiles(@"" + temp, "*.*");
+                    //GetDirectories((@"" + _viwe.Full_Path_Note), "*.*");
+                    str1 = _viwe.proxy.GetDirectories(@"" + temp, "*.*");
+                    //GetFiles((@"" + _viwe.Full_Path_Note), "*.*");
+                    str2 = _viwe.proxy.GetFiles(@"" + temp, "*.*");
 
                     int length = str1.Length;
 
@@ -226,13 +242,13 @@ namespace Conductor
 
                 if (temp == "g")
                 {
-                    str1 = Directory.GetLogicalDrives();
+                    str1 = _viwe.proxy.GetLogicalDrives();
                 }
              
                 else
                 {
-                    str1 = Directory.GetDirectories(@"" + temp, "*.*");
-                    str2 = Directory.GetFiles(@"" + temp, "*.*");
+                    str1 = _viwe.proxy.GetDirectories(@"" + temp, "*.*");
+                    str2 = _viwe.proxy.GetFiles(@"" + temp, "*.*");
 
                     int length = str1.Length;
 
@@ -263,12 +279,12 @@ namespace Conductor
 
                 if (temp == "g")
                 {
-                    str1 = Directory.GetLogicalDrives();
+                    str1 = _viwe.proxy.GetLogicalDrives();
                 }             
                 else
                 {
-                    str1 = Directory.GetDirectories(@"" + temp, "*.*");
-                    str2 = Directory.GetFiles(@"" + temp, "*.*");
+                    str1 = _viwe.proxy.GetDirectories(@"" + temp, "*.*");
+                    str2 = _viwe.proxy.GetFiles(@"" + temp, "*.*");
 
                     int length = str1.Length;
 
@@ -287,9 +303,18 @@ namespace Conductor
         //это в службу
         public void Start_program(object sender, EventArgs e)
         {
-  
-            string[] str1 = Directory.GetLogicalDrives();
-            int length = str1.Length;
+
+            try {
+
+             
+                _viwe.httpAdr1 = new EndpointAddress("http://"+ _viwe.ip +":"+ _viwe.port+ "/Library_Conductor");
+                _viwe.HttpBinding = new BasicHttpBinding();
+                _viwe.proxy = new Library_ConductorClient(_viwe.HttpBinding, _viwe.httpAdr1);
+
+
+              
+            string[] str1 = _viwe.proxy.GetLogicalDrives();
+                int length = str1.Length;
             _viwe.str = str1;
 
 
@@ -300,17 +325,18 @@ namespace Conductor
 
 
 
-                string[] astrLogicalDrives = System.IO.Directory.GetLogicalDrives(); // System.Environment.GetLogicalDrives();    
+                string[] astrLogicalDrives = _viwe.proxy.GetLogicalDrives();
 
-            foreach (string disk in astrLogicalDrives)
+                foreach (string disk in astrLogicalDrives)
                 _viwe.Name_Notee_List.Add(disk);
             string[] str = null;
             for (int element = 0; element < astrLogicalDrives.Length; element++)
             {
                 try
                 {
-                    str = System.IO.Directory.GetDirectories((@"" + astrLogicalDrives[element]), "*.*");
-                    if (str.Length > 0)
+                     
+                        str = _viwe.proxy.GetDirectories((@"" + astrLogicalDrives[element]), "*.*");
+                        if (str.Length > 0)
                     {
                         _viwe.Name_Notee_element_List.Add(1);
                     }
@@ -325,6 +351,8 @@ namespace Conductor
             Info(str1);
 
             model.Add_Histori("g");
+            }
+            catch { }
         }
       
 
@@ -334,15 +362,15 @@ namespace Conductor
             for (string s = model.Move_Tree(); s != "none"; s = model.Move_Tree())
             {
                 _viwe.Name_Notee_element_List_Tree.Add(s);
-                string[] str = System.IO.Directory.GetDirectories((@"" +s ), "*.*");
+                string[] str = _viwe.proxy.GetDirectories((@"" +s ), "*.*");
                 FileInfo fi;
 
                 for (int i = 0; i < str.Length; i++)
                 {
                     try
                     {
-                        fi = new FileInfo(str[i]);
-                        string[] str2 = System.IO.Directory.GetDirectories((@"" + fi.FullName), "*.*");
+                        fi = _viwe.proxy.GetFileInfo(str[i]);
+                        string[] str2 = _viwe.proxy.GetDirectories((@"" + fi.FullName), "*.*");
                         _viwe.Name_Notee_List.Add(fi.Name);
                         _viwe.Full_Path_Note_List.Add(fi.FullName);
 
@@ -364,12 +392,12 @@ namespace Conductor
             string[] str1, str3;
             if (temp == "g")
             {
-                str1 = Directory.GetLogicalDrives();
+                str1 = _viwe.proxy.GetLogicalDrives();
             }
             else
             {
-                str1 = Directory.GetDirectories(@"" + temp, "*.*");
-                str3 = Directory.GetFiles(@"" + temp, "*.*");
+                str1 = _viwe.proxy.GetDirectories(@"" + temp, "*.*");
+                str3 = _viwe.proxy.GetFiles(@"" + temp, "*.*");
 
                 int length = str1.Length;
 

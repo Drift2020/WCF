@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Conductor
+namespace Model
 {
-    class Histori
+    public class Histori
     {
         private List<string> list;
         private List<string> openTree;
@@ -20,8 +20,8 @@ namespace Conductor
         }
         public void Add_Tree(string s)
         {
-            
-           
+
+
             openTree.Add(s);
         }
         public void Dell_Tree(string s)
@@ -36,7 +36,7 @@ namespace Conductor
         {
             if (element_o < openTree.Count)
             {
-             
+
 
                 return openTree[element_o++];
             }
@@ -49,14 +49,14 @@ namespace Conductor
 
         public void Add_Histori(string s)
         {
-            if(list.Count>0)
-            element_l++;
+            if (list.Count > 0)
+                element_l++;
 
             list.Add(s);
         }
         public string Move_Histori()
         {
-            if (element_l < list.Count-1)
+            if (element_l < list.Count - 1)
             {
                 ++element_l;
                 return list[element_l];

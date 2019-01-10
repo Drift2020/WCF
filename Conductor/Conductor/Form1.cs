@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.ServiceModel;
 
 namespace Conductor
 {
@@ -26,6 +27,7 @@ namespace Conductor
         public event EventHandler<EventArgs> Start_program;
         public event EventHandler<EventArgs> Renewal;
         public event EventHandler<EventArgs> ViweItem;
+        public event EventHandler<EventArgs> Connect;
 
         #region Pole
 
@@ -54,26 +56,37 @@ namespace Conductor
         public List<string> Date_Edit_element_List { set { date_Edit_element_List = value; } get { return date_Edit_element_List; } }
         public List<string> Size_element_List { set { size_element_List = value; } get { return size_element_List; } }
         public List<string> Type_element_List { set { type_element_List = value; } get { return type_element_List; } }
+
+        public string ip { get ; set ; }
+        public string port { get ; set; }
+
+        EndpointAddress HttpAdr1;
+        BasicHttpBinding httpBinding;
+        Library_ConductorClient Proxy;
+
+        public EndpointAddress httpAdr1 { get { return HttpAdr1; } set { HttpAdr1 = value; } }
+        public BasicHttpBinding HttpBinding { get { return httpBinding; } set { httpBinding = value; } }
+        public Library_ConductorClient proxy { get { return Proxy; } set { Proxy = value; } }
         #endregion Pole
         private void Form1_Load(object sender, EventArgs e)
         {
-            Start_program?.Invoke(this, EventArgs.Empty);
+            //    Start_program?.Invoke(this, EventArgs.Empty);
 
-            TreeNode node;
+            //TreeNode node;
 
-            // string[] astrLogicalDrives = System.IO.Directory.GetLogicalDrives(); // System.Environment.GetLogicalDrives();          
-            for (int disk = 0; disk < name_Notee_List.Count; disk++)
-            {
-                node = treeViewPath1.Nodes.Add(name_Notee_List[disk]);
-
-
-                node.Name = name_Notee_List[disk];
-                if (name_Notee_element_List[disk] > 0)
-                    node.Nodes.Add("1");
-            }
+            //string[] astrLogicalDrives = proxy.GetLogicalDrives(); // System.Environment.GetLogicalDrives();          
+            //for (int disk = 0; disk < name_Notee_List.Count; disk++)
+            //{
+            //    node = treeViewPath1.Nodes.Add(name_Notee_List[disk]);
 
 
-            DravItem();
+            //    node.Name = name_Notee_List[disk];
+            //    if (name_Notee_element_List[disk] > 0)
+            //        node.Nodes.Add("1");
+            //}
+
+
+            //DravItem();
         }
         public Form1()
         {
@@ -107,7 +120,8 @@ namespace Conductor
                     DravItem();
                 }             
             }
-            catch (Exception ex) { Remove_Die_Path?.Invoke(this, EventArgs.Empty);
+            catch (Exception ex) {
+                Remove_Die_Path?.Invoke(this, EventArgs.Empty);
                 MessageBox.Show(ex.Message); }
         }
 
@@ -123,7 +137,9 @@ namespace Conductor
                     DravItem();
                 }
             }
-            catch (Exception ex) { Remove_Die_Path?.Invoke(this, EventArgs.Empty); MessageBox.Show(ex.Message); }
+            catch (Exception ex) {
+                Remove_Die_Path?.Invoke(this, EventArgs.Empty);
+                MessageBox.Show(ex.Message); }
         }
 
         private void toolStripButtonUp_Click(object sender, EventArgs e)
@@ -138,7 +154,8 @@ namespace Conductor
                     DravItem();
                 }
             }
-            catch (Exception ex) { Remove_Die_Path?.Invoke(this, EventArgs.Empty); MessageBox.Show(ex.Message); }
+            catch (Exception ex) {
+                Remove_Die_Path?.Invoke(this, EventArgs.Empty); MessageBox.Show(ex.Message); }
         }
 
         private void toolStripButtonRenewal_Click(object sender, EventArgs e)
@@ -193,6 +210,7 @@ namespace Conductor
 
         }
 
+        #region Icon
         private void DravItem()
         {
             list.Images.Clear();
@@ -288,7 +306,7 @@ namespace Conductor
             tempMenuItem = nowItem;
 
         }
-     
+        #endregion Icon
         #endregion Button
 
         private void treeViewPath1_BeforeExpand(object sender, TreeViewCancelEventArgs e)
@@ -336,6 +354,43 @@ namespace Conductor
             Name_Notee_element_List.Clear();
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ip = IPf.Text;
+            port = PORTf.Text;
+            if (ip != null && port != null)
+            {
+                Connect?.Invoke(this, EventArgs.Empty);
+
+                TreeNode node;
+
+                string[] astrLogicalDrives = proxy.GetLogicalDrives(); // System.Environment.GetLogicalDrives();          
+                for (int disk = 0; disk < name_Notee_List.Count; disk++)
+                {
+                    node = treeViewPath1.Nodes.Add(name_Notee_List[disk]);
+
+
+                    node.Name = name_Notee_List[disk];
+                    if (name_Notee_element_List[disk] > 0)
+                        node.Nodes.Add("1");
+                }
+
+
+                DravItem();
+            }
+        }
+
+        private void listViewFolder1_ItemActivate(object sender, EventArgs e)
+        {
+            listViewFolder1.SelectedItems[0].Name
+            string h = "";
+        }
+
         private void treeViewPath1_AfterSelect(object sender, TreeViewEventArgs e)
         {
            
@@ -370,7 +425,8 @@ namespace Conductor
             {
                 Edit_List_Viwe?.Invoke(this, EventArgs.Empty);
             }
-            catch (Exception ex) { Remove_Die_Path?.Invoke(this, EventArgs.Empty); MessageBox.Show(ex.Message); }
+            catch (Exception ex) {
+                Remove_Die_Path?.Invoke(this, EventArgs.Empty); MessageBox.Show(ex.Message); }
         }
 
        
