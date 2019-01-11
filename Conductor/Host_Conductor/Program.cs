@@ -15,7 +15,7 @@ namespace Host_Conductor
             using (var host = new ServiceHost(typeof(Library_Conductor.Library_Conductor)))
             {
                 host.Open();
-                Console.WriteLine("host start");
+                Console.WriteLine("host start localhost:8080");
                 Console.ReadLine();
             }
 

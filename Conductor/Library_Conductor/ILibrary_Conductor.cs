@@ -30,6 +30,13 @@ namespace Library_Conductor
         string[] GetFiles(string path, string filt);
 
         [OperationContract]
-        Stream GetStream(string path);
+        byte[] GetStream(int size);
+
+        [OperationContract]
+        bool StartStream(string path);
+
+        [OperationContract]
+        long GetSize();
+
     }
 }

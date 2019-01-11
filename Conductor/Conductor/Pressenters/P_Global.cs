@@ -17,6 +17,19 @@ namespace Conductor
         //  private readonly 
         public P_Global(I_Global viwe)
         {
+
+          
+           if( !Directory.Exists("temp"))
+           {
+                Directory.CreateDirectory("temp");
+           }
+            //temp.ToList().ForEach(x =>
+            //{
+            //    if()
+            //});
+          
+
+
             model = new Histori();
             _viwe = viwe;
             _viwe.Close_Program += new EventHandler<EventArgs>(Close_Program);
@@ -31,8 +44,67 @@ namespace Conductor
             _viwe.Renewal += new EventHandler<EventArgs>(Renewal);
             _viwe.Remove_Die_Path += new EventHandler<EventArgs>(Remove_Die_Path);
             _viwe.ViweItem += new EventHandler<EventArgs>(ViweItem);
+            _viwe.OpenFile+= new EventHandler<EventArgs>(Open_File);
 
         }
+
+       
+        public void Open_File(object sender, EventArgs e)
+        {
+         
+           string[] file_temp = Directory.GetFiles("temp\\");
+
+           if(file_temp.Length>0)
+            file_temp.ToList().ForEach(x => { File.Delete(x); });
+
+            _viwe.Select_Elements.ForEach(x =>
+            {
+
+            FileInfo temp_file = _viwe.proxy.GetFileInfo(x);
+
+
+
+             
+
+                if (temp_file.Attributes != FileAttributes.Directory && _viwe.proxy.StartStream(temp_file.FullName))
+                {
+                    byte[] file = null;
+
+                    FileStream stream = File.Open("temp\\" + temp_file.Name, FileMode.Create);
+
+                    var i = 5000;
+                    while (_viwe.proxy.GetSize() > 0)
+                    {
+                        if (_viwe.proxy.GetSize() - i >= 0)
+                            file = _viwe.proxy.GetStream(i);
+                        else
+                        {
+                            file = _viwe.proxy.GetStream((int)_viwe.proxy.GetSize());
+                        }
+
+                       
+
+                        stream.Write(file, 0, file.Length);
+
+                        
+                    }
+                    stream.Dispose();
+                    stream.Close();
+
+                    var proc = new System.Diagnostics.Process();
+                    proc.StartInfo.FileName = "temp\\" + temp_file.Name;
+                    proc.StartInfo.UseShellExecute = true;
+                    proc.Start();
+
+                }
+
+            });
+
+
+        }
+
+
+
         public void Remove_Die_Path(object sender, EventArgs e)
         {
             model.Dell_Histori_element(model.Now_Histori());

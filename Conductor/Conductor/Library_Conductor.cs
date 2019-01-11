@@ -44,6 +44,24 @@ public interface ILibrary_Conductor
     
     [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILibrary_Conductor/GetFiles", ReplyAction="http://tempuri.org/ILibrary_Conductor/GetFilesResponse")]
     System.Threading.Tasks.Task<string[]> GetFilesAsync(string path, string filt);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILibrary_Conductor/GetStream", ReplyAction="http://tempuri.org/ILibrary_Conductor/GetStreamResponse")]
+    byte[] GetStream(int size);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILibrary_Conductor/GetStream", ReplyAction="http://tempuri.org/ILibrary_Conductor/GetStreamResponse")]
+    System.Threading.Tasks.Task<byte[]> GetStreamAsync(int size);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILibrary_Conductor/StartStream", ReplyAction="http://tempuri.org/ILibrary_Conductor/StartStreamResponse")]
+    bool StartStream(string path);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILibrary_Conductor/StartStream", ReplyAction="http://tempuri.org/ILibrary_Conductor/StartStreamResponse")]
+    System.Threading.Tasks.Task<bool> StartStreamAsync(string path);
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILibrary_Conductor/GetSize", ReplyAction="http://tempuri.org/ILibrary_Conductor/GetSizeResponse")]
+    long GetSize();
+    
+    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ILibrary_Conductor/GetSize", ReplyAction="http://tempuri.org/ILibrary_Conductor/GetSizeResponse")]
+    System.Threading.Tasks.Task<long> GetSizeAsync();
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -128,5 +146,35 @@ public partial class Library_ConductorClient : System.ServiceModel.ClientBase<IL
     public System.Threading.Tasks.Task<string[]> GetFilesAsync(string path, string filt)
     {
         return base.Channel.GetFilesAsync(path, filt);
+    }
+    
+    public byte[] GetStream(int size)
+    {
+        return base.Channel.GetStream(size);
+    }
+    
+    public System.Threading.Tasks.Task<byte[]> GetStreamAsync(int size)
+    {
+        return base.Channel.GetStreamAsync(size);
+    }
+    
+    public bool StartStream(string path)
+    {
+        return base.Channel.StartStream(path);
+    }
+    
+    public System.Threading.Tasks.Task<bool> StartStreamAsync(string path)
+    {
+        return base.Channel.StartStreamAsync(path);
+    }
+    
+    public long GetSize()
+    {
+        return base.Channel.GetSize();
+    }
+    
+    public System.Threading.Tasks.Task<long> GetSizeAsync()
+    {
+        return base.Channel.GetSizeAsync();
     }
 }

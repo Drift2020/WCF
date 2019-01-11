@@ -28,6 +28,7 @@ namespace Conductor
         public event EventHandler<EventArgs> Renewal;
         public event EventHandler<EventArgs> ViweItem;
         public event EventHandler<EventArgs> Connect;
+        public event EventHandler<EventArgs> OpenFile;
 
         #region Pole
 
@@ -67,6 +68,9 @@ namespace Conductor
         public EndpointAddress httpAdr1 { get { return HttpAdr1; } set { HttpAdr1 = value; } }
         public BasicHttpBinding HttpBinding { get { return httpBinding; } set { httpBinding = value; } }
         public Library_ConductorClient proxy { get { return Proxy; } set { Proxy = value; } }
+
+        List<string> select_Elements;
+        public List<string> Select_Elements { get { return select_Elements; } set { select_Elements = value; } }
         #endregion Pole
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -90,6 +94,7 @@ namespace Conductor
         }
         public Form1()
         {
+            select_Elements = new List<string>();
             smal_size = new Size(18, 18);
             big_size = new Size(48, 48);
             start_point = new Size(32, 32);
@@ -387,8 +392,17 @@ namespace Conductor
 
         private void listViewFolder1_ItemActivate(object sender, EventArgs e)
         {
-            listViewFolder1.SelectedItems[0].Name
-            string h = "";
+
+            int leng = listViewFolder1.SelectedItems.Count;
+
+
+            for (int i = 0; i < leng; i++)
+            {
+                Select_Elements.Add(Full_Path_Note+"\\"+listViewFolder1.SelectedItems[i].Text);
+            }
+            OpenFile?.Invoke(this, EventArgs.Empty);
+            Select_Elements.Clear();
+
         }
 
         private void treeViewPath1_AfterSelect(object sender, TreeViewEventArgs e)

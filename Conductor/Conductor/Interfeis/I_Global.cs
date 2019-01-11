@@ -22,7 +22,7 @@ namespace Conductor
         event EventHandler<EventArgs> Renewal;
         event EventHandler<EventArgs> ViweItem;
         event EventHandler<EventArgs> Connect;
-
+        event EventHandler<EventArgs> OpenFile;
 
         EndpointAddress httpAdr1 { set; get; }
         BasicHttpBinding HttpBinding { set; get; }
@@ -34,6 +34,9 @@ namespace Conductor
         string port { get; set; }
         string[] str { set; get; }
         string NameItem { set; get; }
+        List<string> Select_Elements { set; get; }
+
+
         List<string> Full_Path_Note_List { set; get; }
 
         List<string> Date_Edit_element_List { set; get; }
