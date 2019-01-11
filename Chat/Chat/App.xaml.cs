@@ -29,7 +29,9 @@ namespace Chat
             View_Model_Main viewModel = new View_Model_Main();
             view.DataContext = viewModel;
 
-      
+            if (view.Closeng == null)
+                view.Closeng = new Action(viewModel.DisconnectUser);
+
             view.ShowDialog();
 
 

@@ -24,5 +24,10 @@ namespace Chat
         {
             InitializeComponent();
         }
+        public Action Closeng { get; set; }
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Closeng();
+        }
     }
 }

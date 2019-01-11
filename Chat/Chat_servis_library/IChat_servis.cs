@@ -7,8 +7,16 @@ using System.Text;
 
 namespace Chat_servis_library
 {
+
+    //[ServiceContract]
+    //public interface IChat_servis
+    //{
+    //    [OperationContract]
+    //    int DoWork(int x, int y);
+    //}
+
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IChat_servis" in both code and config file together.
-    [ServiceContract(CallbackContract =typeof(IServerChat))]
+    [ServiceContract(CallbackContract = typeof(IServerChat))]
     public interface IChat_servis
     {
         [OperationContract]
@@ -18,7 +26,7 @@ namespace Chat_servis_library
         void Disconnect(int id);
 
         [OperationContract(IsOneWay = true)]
-        void Send_Message(string ms,int id);
+        void Send_Message(string ms, int id);
     }
 
     public interface IServerChat

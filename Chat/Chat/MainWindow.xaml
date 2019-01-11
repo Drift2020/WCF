@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Chat"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -14,13 +14,13 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Label Content="IP:"/>
-            <TextBox Text="{Binding IP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-            <Label Content="port:"/>
-            <TextBox Text="{Binding PORT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
-            <Label Content="Name:"/>
-            <TextBox Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
-            <Button Command="{Binding Button_clik_Connect}" Content="Connect"/>
+            <Label  VerticalAlignment="Center" Content="IP:"/>
+            <TextBox VerticalAlignment="Center" Text="{Binding IP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+            <Label  VerticalAlignment="Center" Content="port:"/>
+            <TextBox  VerticalAlignment="Center" Text="{Binding PORT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="50"/>
+            <Label  VerticalAlignment="Center" Content="Name:"/>
+            <TextBox  VerticalAlignment="Center" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEneble, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+            <Button  VerticalAlignment="Center" Command="{Binding Button_clik_Connect}" Content="{Binding Button, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
         <ListView ItemsSource="{Binding List_message}" Grid.Row="1">
@@ -33,7 +33,7 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <TextBox Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0"/>
-            <Button Command="{Binding Button_clik_Connect}" Grid.Column="1" Content="Send"/>
+            <Button Command="{Binding Button_clik_Send}" Grid.Column="1" Content="Send"/>
         </Grid>
     </Grid>
 </Window>

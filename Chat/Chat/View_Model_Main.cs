@@ -1,15 +1,65 @@
-﻿using System;
+﻿using Chat.ServiceReference1;
+using Chat_servis_library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Chat
 {
-    class View_Model_Main: View_Model_Base
+    class View_Model_Main: View_Model_Base, IServerChat
     {
+
+        public View_Model_Main()
+        {
+            Button = "Connect";
+            IsEneble = true;
+            
+        }
+        public void OnWindowClosing()
+        {
+
+        }
         #region data
+
+        Chat_servisClient client;
+
+        int ID;
+      
+
+ bool isEneble;
+        public bool IsEneble
+        {
+            set
+            {
+                isEneble = value;
+                OnPropertyChanged(nameof(IsEneble));
+            }
+            get
+            {
+                return isEneble;
+            }
+        }
+
+
+        string button;
+        public string Button
+        {
+            set
+            {
+                button = value;
+                OnPropertyChanged(nameof(Button));
+            }
+            get
+            {
+                return button;
+            }
+        }
+
+
         string name;
         public string Name
         {
@@ -66,8 +116,8 @@ namespace Chat
         }
         #endregion data
 
-
-
+        bool isConnect = false;
+      
 
         #region Connect
         private DelegateCommand _Command_Connect;
@@ -84,15 +134,50 @@ namespace Chat
         }
         private void Execute_Connect(object o)
         {
-         
+            if(isConnect)
+            {
+                DisconnectUser();
+            }
+            else
+            {
+                ConnectUser();
+            }
         }
         private bool CanExecute_Connect(object o)
         {
            
 
-            return false;
+            return true;
+        }
+
+
+        void ConnectUser()
+        {
+            if (!isConnect)
+            {
+
+              
+                client = new Chat_servisClient(new System.ServiceModel.InstanceContext(this));
+
+                ID = client.Connect(name);
+                Button = "Disconnect";
+                IsEneble = false;
+                isConnect = true;
+            }
+        }
+        public void DisconnectUser()
+        {
+            client.Disconnect(ID);
+            client = null;
+            Button = "Connect";
+            IsEneble = true;
+            isConnect = false;
         }
         #endregion Connect
+
+
+
+
 
         #region Send
         private DelegateCommand _Command_Send;
@@ -109,14 +194,24 @@ namespace Chat
         }
         private void Execute_Send(object o)
         {
-
+            if(client!=null)
+            client.Send_Message(message,ID);
+            Message = "";
         }
         private bool CanExecute_Send(object o)
         {
 
-
+            if(client!=null)
+            return true;
             return false;
         }
+
+
+        public void Message_Calback(string ms)
+        {
+            List_message.Add(ms);
+        }
+
         #endregion Send
 
 
