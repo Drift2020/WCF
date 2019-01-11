@@ -8,10 +8,24 @@ using System.Text;
 namespace Chat_servis_library
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Chat_servis" in both code and config file together.
+
     public class Chat_servis : IChat_servis
     {
-        public void DoWork()
+        public int Connect()
         {
+            
+        }
+
+        public void Disconnect(int id)
+        {
+            
+        }
+
+        
+
+        public void Send_Message(string ms)
+        {
+          
         }
     }
 }
