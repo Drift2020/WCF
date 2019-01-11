@@ -11,21 +11,51 @@ namespace Chat_servis_library
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class Chat_servis : IChat_servis
     {
-        public int Connect()
+        List<ServerUser> servers_Users=new List<ServerUser>();
+        int next_id = 1;
+        public int Connect(string name)
         {
-            
+            ServerUser tempUser = new ServerUser()
+            {
+                Id = next_id,
+                Name = name,
+                operationContext = OperationContext.Current
+            };
+            next_id++;
+            Send_Message(tempUser.Name + " connect to chat", 0);
+            servers_Users.Add(tempUser);
+            return tempUser.Id;
         }
 
         public void Disconnect(int id)
         {
-            
+            var user = servers_Users.FirstOrDefault(i => i.Id == id);
+            if(user!=null)
+            {
+                servers_Users.Remove(user);
+                Send_Message(user.Name + " disconnect to chat", 0);
+            }
+
         }
 
         
 
-        public void Send_Message(string ms)
+        public void Send_Message(string ms, int id)
         {
-          
+            servers_Users.ForEach(elem =>
+            {
+                string send = DateTime.Now.ToShortTimeString();
+
+                var user = servers_Users.FirstOrDefault(i => i.Id == id);
+                if (user != null)
+                {
+                    send += ": " + user.Name + " ";
+                }
+                send += ms;
+
+                elem.operationContext.GetCallbackChannel<IServerChat>().Message_Calback(send);
+
+            });
         }
     }
 }

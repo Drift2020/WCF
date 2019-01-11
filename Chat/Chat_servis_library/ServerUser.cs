@@ -14,7 +14,7 @@ namespace Chat_servis_library
             get;
             set;
         }
-        public int Name
+        public string Name
         {
             get;
             set;

@@ -12,18 +12,18 @@ namespace Chat_servis_library
     public interface IChat_servis
     {
         [OperationContract]
-        int Connect();
+        int Connect(string name);
 
         [OperationContract]
         void Disconnect(int id);
 
         [OperationContract(IsOneWay = true)]
-        void Send_Message(string ms);
+        void Send_Message(string ms,int id);
     }
 
     public interface IServerChat
     {
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         void Message_Calback(string ms);
     }
 }
